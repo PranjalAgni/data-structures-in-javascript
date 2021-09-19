@@ -8,19 +8,32 @@ class LinkedListNode<Key, Value> {
   public data: Value;
   public next: LinkedListNode<Key, Value>;
 
-  constructor(mKey: Key, mData: Value) {
-    this.key = mKey;
-    this.data = mData;
+  constructor(key: Key, data: Value) {
+    this.key = key;
+    this.data = data;
     this.next = null;
   }
 }
 
+class LinkedList<Key, Value> {
+  public head: LinkedListNode<Key, Value>;
+  public tail: LinkedListNode<Key, Value>;
+
+  constructor() {
+    this.head = null;
+    this.tail = null;
+  }
+}
+
 class CustomMap<Key, Value> {
-  private readonly hashTable: Array<LinkedListNode<Key, Value> | null>;
+  private readonly hashTable: Array<LinkedList<Key, Value> | null>;
   private readonly HASH_TABLE_SIZE: number;
   constructor() {
     this.HASH_TABLE_SIZE = 1000;
-    this.hashTable = Array(this.HASH_TABLE_SIZE).fill(null);
+    this.hashTable = Array.from(
+      { length: this.HASH_TABLE_SIZE },
+      () => new LinkedList<Key, Value>()
+    );
   }
 
   private hashFunction(key: Key): number {
@@ -44,44 +57,46 @@ class CustomMap<Key, Value> {
   }
 
   private appendToLinkedList(
-    head: LinkedListNode<Key, Value>,
+    tail: LinkedListNode<Key, Value>,
     nodeToInsert: LinkedListNode<Key, Value>
   ) {
-    let runningNode = head;
-    while (runningNode.next !== null) {
-      runningNode = runningNode.next;
-    }
-
-    runningNode.next = nodeToInsert;
-    return head;
+    tail.next = nodeToInsert;
+    return nodeToInsert;
   }
 
   private searchInLinkedList(head: LinkedListNode<Key, Value>, key: Key) {
     let runnerNode = head;
     while (runnerNode !== null) {
-      if (runnerNode.key === key) return runnerNode.data;
+      if (runnerNode.key === key) return runnerNode;
       runnerNode = runnerNode.next;
     }
     return null;
   }
 
-  put(key: Key, value: Value) {
+  put(key: Key, value: Value): void {
     const keyIdx = this.hashFunction(key);
-    let linkedListHead = this.hashTable[keyIdx];
+    console.log("Using index as = ", keyIdx);
+    const linkedList = this.hashTable[keyIdx];
+
     const currentNode = this.getLinkedListNode(key, value);
-    if (!linkedListHead) {
-      linkedListHead = currentNode;
+    if (!linkedList.head) {
+      linkedList.head = currentNode;
+      linkedList.tail = currentNode;
+      console.log("Head insertion");
     } else {
-      linkedListHead = this.appendToLinkedList(linkedListHead, currentNode);
+      console.log("Tail insertion");
+      linkedList.tail = this.appendToLinkedList(linkedList.tail, currentNode);
     }
-    this.hashTable[keyIdx] = linkedListHead;
+
+    this.hashTable[keyIdx] = linkedList;
   }
 
   get(key: Key): Value {
     const keyIdx = this.hashFunction(key);
-    const headNode = this.hashTable[keyIdx];
-    if (!headNode) return null;
-    return this.searchInLinkedList(headNode, key);
+    const linkedList = this.hashTable[keyIdx];
+    if (!linkedList) return null;
+    const targetNode = this.searchInLinkedList(linkedList.head, key);
+    return targetNode.data;
   }
 }
 
