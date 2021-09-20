@@ -10,6 +10,12 @@
 // console.log(bidirectionalMap.hasValue("not-found"));
 
 import CustomMap from "./lib/CustomMap";
+
+// Time Complexity generally for get,put,remove its O(1)
+// In worst case
+// put: O(1)
+// get: O(N)
+// remove: O(N)
 const customMap = new CustomMap<string, unknown>();
 
 // console.time("set a key");
@@ -21,11 +27,20 @@ const customMap = new CustomMap<string, unknown>();
 // console.timeEnd("get a key");
 // console.log(customMap.get("world"));
 
-customMap.put("hello", "world");
-customMap.put("pranjal", "agnihotri");
-customMap.put("p1ranjal", "agnihotri");
-customMap.put("p1r3njal", "agnihotri");
-customMap.put("p1r3nja5l", "agnihotri");
-console.log(customMap.get("p1r3njal"));
-customMap.remove("p1r3njal");
-console.log(customMap.get("p1r3njal"));
+// customMap.put("hello", "world");
+// customMap.put("pranjal", "agnihotri");
+// customMap.put("p1ranjal", "agnihotri");
+// customMap.put("p1r3njal", "agnihotri");
+// customMap.put("p1r3nja5l", "agnihotri");
+// console.log(customMap.get("hello"));
+// customMap.remove("hello");
+// console.log(customMap.get("hello"));
+
+const weakMap = new WeakMap();
+
+const hello = {
+  name: "Pranjal"
+};
+
+weakMap.set(hello, "world");
+console.log(weakMap.get(hello));
