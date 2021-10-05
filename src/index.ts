@@ -1,5 +1,6 @@
 // import BidirectionalMap from "./lib/BidirectionalMap";
-
+import CustomMap from "./lib/CustomMap";
+import Trie from "./lib/Trie";
 // const bidirectionalMap = new BidirectionalMap<unknown, string>();
 
 // bidirectionalMap.set("ping", "pong");
@@ -9,14 +10,12 @@
 // console.log(bidirectionalMap.getByKey(1));
 // console.log(bidirectionalMap.hasValue("not-found"));
 
-import CustomMap from "./lib/CustomMap";
-
 // Time Complexity generally for get,put,remove its O(1)
 // In worst case
 // put: O(1)
 // get: O(N)
 // remove: O(N)
-const customMap = new CustomMap<string, unknown>();
+// const customMap = new CustomMap<string, unknown>();
 
 // console.time("set a key");
 // customMap.put("hello-world😃", "world");
@@ -36,11 +35,17 @@ const customMap = new CustomMap<string, unknown>();
 // customMap.remove("hello");
 // console.log(customMap.get("hello"));
 
-const weakMap = new WeakMap();
+const trie = new Trie();
 
-const hello = {
-  name: "Pranjal"
-};
+trie.insert("this");
+trie.insert("current");
+trie.insert("world");
+trie.insert("cool");
+trie.insert("java");
+trie.insert("javascript");
+trie.insert("javascriptshop");
+trie.insert("javascriptlove");
 
-weakMap.set(hello, "world");
-console.log(weakMap.get(hello));
+// console.log(trie.search("World"));
+// console.log(trie.search("hello"));
+console.log(trie.autoComplete("java"));
