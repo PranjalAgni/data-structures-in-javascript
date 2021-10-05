@@ -13,11 +13,11 @@ class Trie {
     this.trieRoot = new TrieNode();
   }
 
-  characterToIndex(letter: string) {
+  characterToIndex(letter: string): number {
     return letter.charCodeAt(0) - 97;
   }
 
-  insert(word: string) {
+  insert(word: string): void {
     const N = word.length;
     let trieCrawler = this.trieRoot;
     for (let idx = 0; idx < N; idx++) {
@@ -56,6 +56,7 @@ class Trie {
 
     return trieCrawler;
   }
+
   private autoCompleteHelper(
     trieCrawler: TrieNode,
     currentWord: string,
@@ -75,6 +76,7 @@ class Trie {
       current = mapIterator.next();
     }
   }
+
   autoComplete(word: string): string[] {
     const trieNode = this.getNodeIfExist(word);
     if (!trieNode) return [];
