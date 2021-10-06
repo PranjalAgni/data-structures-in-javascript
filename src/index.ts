@@ -1,6 +1,7 @@
 // import BidirectionalMap from "./lib/BidirectionalMap";
 import CustomMap from "./lib/CustomMap";
 import Trie from "./lib/Trie";
+import Deque from "./lib/Deque";
 // const bidirectionalMap = new BidirectionalMap<unknown, string>();
 
 // bidirectionalMap.set("ping", "pong");
@@ -35,17 +36,29 @@ import Trie from "./lib/Trie";
 // customMap.remove("hello");
 // console.log(customMap.get("hello"));
 
-const trie = new Trie();
+// const trie = new Trie();
 
-trie.insert("this");
-trie.insert("current");
-trie.insert("world");
-trie.insert("cool");
-trie.insert("java");
-trie.insert("javascript");
-trie.insert("javascriptshop");
-trie.insert("javascriptlove");
+// trie.insert("this");
+// trie.insert("current");
+// trie.insert("world");
+// trie.insert("cool");
+// trie.insert("java");
+// trie.insert("javascript");
+// trie.insert("javascriptshop");
+// trie.insert("javascriptlove");
 
 // console.log(trie.search("World"));
 // console.log(trie.search("hello"));
-console.log(trie.autoComplete("java"));
+// console.log(trie.autoComplete("java"));
+
+const deque = new Deque<number>();
+deque.pushBack(1);
+deque.pushBack(2);
+deque.pushBack(3);
+deque.pushBack(4);
+deque.pushBack(5);
+deque.pushFront(10);
+
+while (!deque.isEmpty()) {
+  console.log(deque.popBack());
+}
