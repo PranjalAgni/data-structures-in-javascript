@@ -1,6 +1,6 @@
 ## 🍱 dsa.js - Implementing fundamental data structures in JS
 
-Note: You can find all the data structures implemented so far inside `lib`
+Note: You can find all the data structures implemented so far inside `src/lib`
 
 Data structures implemented:
 
