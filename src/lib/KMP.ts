@@ -7,65 +7,37 @@ class KMP {
     this.pattern = pattern;
   }
 
-  getLongestCommonPrefix(prefix: string[], suffix: string[]): string {
-    const map = new Map<string, number>();
-    let longestLen = 0;
-    let longestWord = "";
-
-    for (const word of prefix) {
-      map.set(word, 1);
-    }
-
-    for (const word of suffix) {
-      if (map.has(word)) {
-        if (word.length > longestLen) {
-          longestLen = word.length;
-          longestWord = word;
-        }
-      }
-    }
-
-    return longestWord;
-  }
   computeLPSArray(): number[] {
     const N = this.pattern.length;
-    const lps: number[] = Array.from({ length: N }, () => 0);
-    const lpsWord: string[] = Array.from({ length: N }, () => "");
-    const properPrefix = [];
-    let suffix = [];
-    let suffixMap = new Map<string, number>();
-    let currentPrefix = "";
-    let currentSuffix = "";
-    for (let idx = 0; idx < N; idx++) {
-      if (idx - 1 >= 0) {
-        currentPrefix += this.pattern[idx - 1];
-        properPrefix.push(currentPrefix);
+    const lps: number[] = new Array(N).fill(0);
+    let idx = 1;
+    let len = 0;
+
+    while (idx < N) {
+      if (this.pattern[idx] === this.pattern[len]) {
+        lps[idx] = len + 1;
+        idx += 1;
+        len += 1;
+      } else {
+        if (len != 0) len = lps[len - 1];
+        else idx += 1;
       }
-
-      currentSuffix = "";
-      suffix = [];
-      suffixMap = new Map<string, number>();
-
-      // compute suffixes
-      for (let jdx = idx; jdx >= 0; jdx--) {
-        currentSuffix = this.pattern[jdx] + currentSuffix;
-        if (!suffixMap.has(currentSuffix)) suffix.push(currentSuffix);
-        suffixMap.set(currentSuffix, 1);
-      }
-
-      lpsWord[idx] = this.getLongestCommonPrefix(properPrefix, suffix);
-      lps[idx] = lpsWord[idx].length;
     }
 
-    // console.log(properPrefix);
-    console.log(lpsWord);
     return lps;
   }
 }
 
-const kmp = new KMP("baaabaacaabaa", "aabaacaabaa");
+const kmp = new KMP("baaabaacaabaa", "aaabaacaabaa");
 
 const lps = kmp.computeLPSArray();
 console.log(lps);
 
 export default KMP;
+
+// aaabaacaabaa
+// a {} {a }0
+// aa {a} {a, aa} 1
+// aaa {a, aa} {a, aa, aaa} 2
+// aaab {a, aa, aaa} {b, ab, aab, aaab} 0
+// aaaba {a, aa, aaa, aaab} {a, ba, aba, aaba} 1
