@@ -1,41 +1,41 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-const expiryProperty = "expiry";
-
 interface Entry {
   [key: string]: any;
 }
+class ExpiryMap<K = any, V = Entry> {
+  private readonly expiryProperty = "expiry";
 
-const expiryMap = <K = any, V = Entry>(map: Map<K, V>) => {
-  for (const entry of map) {
-    const value = entry[1] as Record<string, any>;
-    if (expiryProperty in value) {
-      setTimeout(
-        (entry) => {
-          map.delete(entry[0]);
-        },
-        value[expiryProperty] as number,
-        entry
-      );
-    }
-  }
-
-  const printMap = () => {
+  private printMap(map: Map<K, V>) {
     for (const entry of map) {
       console.log(JSON.stringify(entry));
     }
 
     console.log("*=========*");
-  };
+  }
+  public removeKeysAfterTimeout(map: Map<K, V>) {
+    for (const entry of map) {
+      const value = entry[1] as Record<string, any>;
+      if (this.expiryProperty in value) {
+        setTimeout(
+          (entry) => {
+            map.delete(entry[0]);
+          },
+          value[this.expiryProperty] as number,
+          entry
+        );
+      }
+    }
 
-  setTimeout(() => {
-    printMap();
-  }, 500);
+    setTimeout(() => {
+      this.printMap(map);
+    }, 500);
 
-  setTimeout(() => {
-    printMap();
-  }, 1500);
-};
+    setTimeout(() => {
+      this.printMap(map);
+    }, 1500);
+  }
+}
 
 const exampleMap = new Map([
   ["key1", { data: "value1", expiry: 1000 }],
@@ -43,4 +43,4 @@ const exampleMap = new Map([
   ["key3", { data: "value2", expiry: 2000 }]
 ]);
 
-console.log(expiryMap(exampleMap));
+new ExpiryMap().removeKeysAfterTimeout(exampleMap);
