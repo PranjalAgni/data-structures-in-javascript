@@ -40,7 +40,8 @@ class ExpiryMap<K = any, V = Entry> {
 const exampleMap = new Map([
   ["key1", { data: "value1", expiry: 1000 }],
   ["key2", { data: "value2" }],
-  ["key3", { data: "value2", expiry: 2000 }]
+  ["key3", { data: "value2", expiry: 2000 }],
+  ["key4", { data: "value4", expiry: 1500 }]
 ]);
 
 new ExpiryMap().removeKeysAfterTimeout(exampleMap);
